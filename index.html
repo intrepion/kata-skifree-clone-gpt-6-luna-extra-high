@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eaf5fb" />
+    <meta name="description" content="A tiny downhill skiing arcade game. Dodge the trees, catch the gates, and watch for the yeti." />
+    <title>Powderline — a SkiFree-inspired downhill game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell" aria-label="Powderline skiing game">
+      <canvas id="slope" aria-label="Ski slope game field"></canvas>
+
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Powderline home">
+          <span class="brand-mark" aria-hidden="true">↘</span>
+          <span class="brand-name">POWDER<span>LINE</span></span>
+          <span class="brand-tag">SKI FREE ’91</span>
+        </a>
+        <div class="top-right">
+          <div class="live-pill"><span></span> LIVE SLOPE</div>
+          <button id="pause-button" class="icon-button" type="button" aria-label="Pause game" title="Pause (Esc)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM15 5h3v14h-3z" /></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="hud" id="hud" aria-live="polite" hidden>
+        <div class="stat-card distance-card">
+          <span class="eyebrow">DISTANCE</span>
+          <strong><span id="distance">0</span><small>m</small></strong>
+          <div class="progress-track"><span id="distance-bar"></span></div>
+          <span class="best-line">BEST <b id="best">0 m</b></span>
+        </div>
+        <div class="stat-card score-card">
+          <span class="eyebrow">RUN SCORE</span>
+          <strong id="score">00000</strong>
+          <span class="score-note" id="score-note">Find the gates</span>
+        </div>
+        <div class="speed-card"><span class="speed-dot"></span><span id="speed">24</span><small>KM/H</small></div>
+      </section>
+
+      <div id="slope-label" class="slope-label" hidden>
+        <span class="slope-label-line"></span>
+        <span>NORTH BOWL</span>
+        <span class="slope-label-line"></span>
+      </div>
+
+      <section class="overlay" id="start-screen" aria-labelledby="start-title">
+        <div class="intro-card">
+          <div class="intro-topline"><span class="sun-icon" aria-hidden="true">✳</span> BLUEBIRD CONDITIONS <span class="topline-date">EST. 1991</span></div>
+          <p class="overline">A DOWNHILL ARCADE RUN</p>
+          <h1 id="start-title">Find your<br /><em>line.</em></h1>
+          <p class="intro-copy">Fresh powder, a forest full of trouble, and one very persistent yeti. Let gravity do the rest.</p>
+          <div class="key-guide" aria-label="Controls">
+            <span class="key-pair"><kbd>←</kbd><kbd>→</kbd><span>STEER</span></span>
+            <span class="guide-divider"></span>
+            <span class="key-pair"><kbd>↑</kbd><span>GO FASTER</span></span>
+            <span class="guide-divider"></span>
+            <span class="key-pair"><kbd>SPACE</kbd><span>JUMP</span></span>
+          </div>
+          <button id="start-button" class="primary-button" type="button"><span>Drop in</span><span aria-hidden="true">↗</span></button>
+          <p class="fine-print">ARROW KEYS OR WASD &nbsp;·&nbsp; P / ESC TO PAUSE</p>
+        </div>
+        <div class="edition-stamp" aria-hidden="true"><span>NO</span><strong>GROOMING</strong><small>JUST VIBES</small></div>
+      </section>
+
+      <section class="overlay secondary-overlay" id="pause-screen" aria-labelledby="pause-title" hidden>
+        <div class="small-card">
+          <div class="pause-glyph" aria-hidden="true">Ⅱ</div>
+          <p class="overline">TAKE A BREATHER</p>
+          <h2 id="pause-title">Paused.</h2>
+          <p class="intro-copy">Your tracks will wait.</p>
+          <button id="resume-button" class="primary-button" type="button"><span>Keep skiing</span><span aria-hidden="true">↗</span></button>
+          <p class="fine-print">PRESS P OR ESC TO RESUME</p>
+        </div>
+      </section>
+
+      <section class="overlay secondary-overlay" id="finish-screen" aria-labelledby="finish-title" hidden>
+        <div class="small-card finish-card">
+          <div class="finish-badge" id="finish-badge" aria-hidden="true">✳</div>
+          <p class="overline" id="finish-overline">THAT WAS A RUN</p>
+          <h2 id="finish-title">Yeti got you.</h2>
+          <p class="result-line"><strong id="final-score">0</strong><span>POINTS</span><i></i><strong id="final-distance">0 m</strong><span>DISTANCE</span></p>
+          <p class="intro-copy" id="finish-copy">The mountain always gets the last laugh.</p>
+          <button id="restart-button" class="primary-button" type="button"><span>Run it back</span><span aria-hidden="true">↗</span></button>
+          <p class="fine-print">PRESS ENTER TO GO AGAIN</p>
+        </div>
+      </section>
+
+      <footer class="bottom-bar" id="bottom-bar" hidden>
+        <div class="run-tip"><span class="tip-icon" aria-hidden="true">✳</span><span id="tip">Gates are worth more than near misses.</span></div>
+        <div class="bottom-controls"><span><kbd>↓</kbd> BRAKE</span><span><kbd>SPACE</kbd> HOP</span><span><kbd>ESC</kbd> PAUSE</span></div>
+      </footer>
+
+      <div class="touch-controls" id="touch-controls" aria-label="Touch controls" hidden>
+        <button type="button" data-control="left" aria-label="Turn left">←</button>
+        <button type="button" data-control="jump" aria-label="Jump">↑</button>
+        <button type="button" data-control="right" aria-label="Turn right">→</button>
+      </div>
+      <div class="toast" id="toast" aria-live="assertive"></div>
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>
