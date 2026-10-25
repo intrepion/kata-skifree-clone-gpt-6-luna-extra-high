@@ -1,5 +1,9 @@
 # Powderline
 
+## Play online
+
+[Play Powderline](https://intrepion.github.io/kata-skifree-clone-gpt-6-luna-extra-high/) — free, playable in your browser.
+
 A small browser-playable downhill skiing arcade game inspired by the classic SkiFree. Dodge the trees, collect slalom gates, hop over trouble, and see how long you can stay ahead of the yeti.
 
 ## Play
