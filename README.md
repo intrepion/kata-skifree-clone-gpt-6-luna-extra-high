@@ -22,3 +22,7 @@ Open `index.html` in a modern browser. There are no build steps, packages, or se
 | Enter | Start or replay |
 
 On touch screens, use the on-screen left, jump, and right buttons. The best distance is saved in local browser storage.
+
+## Arcade metadata
+
+See [docs/arcade-metadata.md](docs/arcade-metadata.md) for the game-owned manifest and screenshot provenance.
