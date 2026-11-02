@@ -1,0 +1,42 @@
+name: Arcade capture review
+on:
+  push:
+    branches: [codex/capture-powderline-20261102]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --no-save --ignore-scripts --package-lock=false playwright@1.63.0
+      - run: node node_modules/playwright/cli.js install --with-deps chromium
+      - name: Test and stage game
+        run: |
+          node --check game.js
+          mkdir capture-site
+          cp index.html styles.css game.js capture-site/
+      - name: Capture real gameplay
+        env:
+          CAPTURE_OUTPUT: capture-output
+        run: |
+          export GAME_SOURCE_COMMIT="$(git rev-parse HEAD^)"
+          python3 -m http.server 4204 --bind 127.0.0.1 --directory capture-site > /tmp/powderline-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for i in $(seq 1 40); do curl --fail --silent http://127.0.0.1:4204/ > /dev/null && break; sleep 0.25; done
+          node scripts/capture-arcade.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: powderline-capture-${{ github.sha }}
+          path: capture-output/
+          if-no-files-found: error
+          retention-days: 14
