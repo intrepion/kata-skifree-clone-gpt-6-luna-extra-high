@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "workflowCommit": "0f032b0345064163e735ad808124b65809234d5f",
+  "sourceCommit": "ff29f68b54c4f0aff795a674cbd2c24d722bb13d",
+  "runId": "41396477830",
+  "url": "http://127.0.0.1:4204/",
+  "inputs": {
+    "index.html": "dedffeaa2c3f41fce51e269c7710b8a1a9b7e97c192f1fb057c7eb8ff22a3530",
+    "styles.css": "c4fd609fcbe8ddfa1e6b3f2a88245dbb86f30f8ddece3a7c9da64a751bbf8861",
+    "game.js": "8a137ef444e714d7a7d03c8b2100ad9dc62b12767810ce82b92198556b0673e5"
+  },
+  "browser": "153.0.8010.12",
+  "viewport": {
+    "width": 1280,
+    "height": 1000
+  },
+  "screenshots": [
+    "powderline-01.png",
+    "powderline-02.png"
+  ]
+}
