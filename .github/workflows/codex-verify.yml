@@ -1,0 +1,28 @@
+name: Verify game
+
+on:
+  push:
+    branches: [codex/add-game-ci-20261103]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --prefix "$RUNNER_TEMP/arcade-ci" --no-save --package-lock=false --ignore-scripts playwright@1.64.1
+      - run: |
+          "$RUNNER_TEMP/arcade-ci/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Test game over loopback HTTP
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          sleep 1
+          NODE_PATH="$RUNNER_TEMP/arcade-ci/node_modules" node .github/scripts/verify-game.cjs
