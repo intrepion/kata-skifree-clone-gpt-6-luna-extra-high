@@ -2,7 +2,7 @@ name: Verify game
 
 on:
   push:
-    branches: [codex/add-game-ci-20261103]
+    branches: [main, codex/add-game-ci-20261103]
   pull_request:
 
 permissions:
